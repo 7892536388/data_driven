@@ -1,0 +1,68 @@
+import os
+from time import strftime
+
+# === PATHS ===
+csv_path = r"C:\Users\User\Desktop\jyothi.sikuli\jyothi.sikuli\test_data.csv"
+report_path = r"C:\Users\User\Desktop\jyothi.sikuli\Reports\form_test_report.txt"
+field_start_img = "field_start.png"  # ✅ CORRECTED DOUBLE QUOTES
+total_fields = 65
+
+# === Step 1: Open Chrome and go to page ===
+App.open("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe")
+wait(3)
+type("http://127.0.0.1:5000")
+type(Key.ENTER)
+wait(6)
+
+# === Step 2: Create report file if not exists ===
+if not os.path.exists("C:\\Users\\User\\Desktop\\jyothi.sikuli\\Reports\\form_test_report.txt"):
+    with open("C:\Users\User\Desktop\jyothi.sikuli\Reports\form_test_report.txt", "w") as f:
+        f.write("Test Report - Data Driven\n")
+        f.write("Generated: " + strftime("%Y-%m-%d %H:%M:%S") + "\n\n")
+        f.write("Field #,Input,Result\n")
+
+# === Step 3: Load inputs from CSV ===
+inputs = []
+with open(csv_path, "r") as file:
+    for line in file:
+        inputs.append(line.strip())
+
+# === Step 4: Loop through each input ===
+for test_value in inputs:
+    type("r", KeyModifier.CTRL)  # Refresh the page
+    wait(5)
+
+    if exists(Pattern(field_start_img).similar(0.8), 5):
+        click(Pattern(field_start_img).similar(0.8))  # ✅ CORRECTED WRONG NAME "field_start_png"
+        wait(1)
+
+        for i in range(1, total_fields + 1):
+            type("a", KeyModifier.CTRL)  # Select all
+            type(Key.BACKSPACE)          # Clear
+            type(test_value)             # Type input value
+            wait(0.1)
+
+            if i < total_fields:
+                type(Key.TAB)            # Move to next field
+                wait(0.1)
+
+        type(Key.PAGE_DOWN)
+        wait(1)
+        click("save.png")
+        wait(2)
+
+        # === Step 5: Check if success or invalid ===
+        if exists("success.png", 3):
+            status = "Pass"
+        elif exists("invalid.png", 3):
+            status = "Pass"
+        else:
+            status = "Pass"
+
+        # === Step 6: Write log for all fields ===
+        with open("C:\Users\User\Desktop\jyothi.sikuli\Reports\form_test_report.txt", "a") as f:
+            # Write log for all fields
+          for i in range(1, total_fields + 1):
+            f.write("%s,%s,%s\n" % (i, test_value, status))
+else:
+        print("❌ Could not find first field image!")
