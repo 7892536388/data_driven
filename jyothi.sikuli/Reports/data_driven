@@ -1,0 +1,60 @@
+import os
+from time import strftime
+csv_path = r"C:\Users\User\Desktop\jyothi.sikuli\test_data_clean.csv"
+report_path = r"C:\Users\User\Desktop\jyothi.sikuli\Reports\form_test_report.txt"
+App.open("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe")
+wait(2)
+type("http://127.0.0.1:5000")
+type(Key.ENTER)
+wait(6)
+if not os.path.exists(r"C:\Users\User\Desktop\jyothi.sikuli\Reports\form_test_report.txt"):
+    with open(r"C:\Users\User\Desktop\jyothi.sikuli\Reports\form_test_report.txt", "w") as f:
+        f.write("Test Plan Execution Report - SONAR IP Field\n")
+        f.write("Generated: " + strftime("%Y-%m-%d %H:%M:%S") + "\n\n")
+        f.write("Test Case Key,Input,Result\n")
+inputs = []
+with open(r"C:\Users\User\Desktop\jyothi.sikuli\test_data_clean.csv", "r") as file:
+    for line in file:
+        inputs.append(line.strip())
+tc_num = 1
+for test_value in inputs:
+    type("r", KeyModifier.CTRL)
+    wait(5)
+    if exists("sonar.png", 5):
+        click("sonar.png")
+        wait(1)
+    else:
+        print("SONAR section not found!")
+        continue
+
+    # Enter value into sonar_ip field
+    if exists("sonar_ip.png", 5):
+        click("sonar_ip.png")
+        wait(0.5)
+        doubleClick("sonar_ip.png")
+        wait(0.3)
+        type(Key.BACKSPACE)
+        wait(0.3)
+        paste(test_value)
+        wait(0.5)
+    else:
+        print("sonar_ip field not found!")
+        continue
+    type(Key.PAGE_DOWN)
+    wait(1)
+    type(Key.PAGE_DOWN)
+    wait(1)
+    if exists("save.png", 5):
+        click("save.png")
+        wait(3)
+    else:
+        print("Save button not found!")
+        continue
+    if exists("message.png", 3) or exists("invalid.png", 3):
+        result = "Pass"
+    else:
+        result = "Fail"
+    with open(r"C:\Users\User\Desktop\jyothi.sikuli\Reports\form_test_report.txt", "a") as f:
+        f.write("TC{0:03},{1},{2}\n".format(tc_num, test_value, result))
+
+    tc_num += 1
