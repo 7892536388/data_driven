@@ -31,6 +31,6 @@ if exists("invalid.png.png", 4):
     result = "Pass"
 else:
     result = "Fail"
-f = open(report_path, "a")
+f = open("C:\Users\User\Desktop\jyothi.sikuli\Reports\sonar_ip_test_report.txt", "a")
 f.write("TC001,abc," + result + "\n")
 f.close() 
