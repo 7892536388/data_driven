@@ -33,5 +33,4 @@ else:
     result = "Fail"
 f = open(report_path, "a")
 f.write("TC001,abc," + result + "\n")
-f.close()
-sir code for 
+f.close() 
