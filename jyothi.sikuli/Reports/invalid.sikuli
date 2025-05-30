@@ -4,7 +4,7 @@ wait(2)
 type("http://127.0.0.1:5000")
 type(Key.ENTER)
 wait(6)
-report_path = r"C:\Users\User\Desktop\jyothi.sikuli\Reports\sonar_ip_test_report.txt"
+report_path = r"C:\Users\User\Desktop\jyothi.sikuli\Reports\ip_test_report.txt"
 if not os.path.exists(report_path):
     f = open(report_path, "w")
     f.write("Test Plan Execution Report - SONAR IP Field\n")
@@ -31,6 +31,6 @@ if exists("invalid.png.png", 4):
     result = "Pass"
 else:
     result = "Fail"
-f = open("C:\Users\User\Desktop\jyothi.sikuli\Reports\sonar_ip_test_report.txt", "a")
+f = open("C:\Users\User\Desktop\jyothi.sikuli\Reports\ip_test_report.txt", "a")
 f.write("TC001,abc," + result + "\n")
 f.close() 
